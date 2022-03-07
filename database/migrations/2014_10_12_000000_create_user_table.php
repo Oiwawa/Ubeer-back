@@ -16,9 +16,13 @@ class CreateUserTable extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('email')->unique();
+            $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->boolean('isAdmin')->default(false);
+            $table->string('address');
+            $table->string('zipcode');
+            $table->string('city');
             $table->rememberToken();
             $table->timestamps();
         });

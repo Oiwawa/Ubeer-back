@@ -20,7 +20,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'email',
+        'username',
         'password',
+        'address',
+        'zipcode',
+        'city',
+    ];
+
+    protected $appends = [
+        'full_name',
+        'full_address',
     ];
 
     /**
@@ -42,8 +51,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function address()
+
+    public function getFullAddressAttribute(): string
     {
-        return $this->belongsTo(Address::class);
+       return $this->address . ', ' . $this->zipcode . ' ' . $this->city;
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return $this->firstname . ' ' . strtoupper($this->lastname);
     }
 }

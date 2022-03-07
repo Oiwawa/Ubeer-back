@@ -18,9 +18,10 @@ class CreateBreweryTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password')->nullable();
-            $table->foreignUuid('address_id')
-                ->references('id')
-                ->on('address');
+            $table->string('phone');
+            $table->string('address');
+            $table->string('zipcode');
+            $table->string('city');
             $table->timestamps();
         });
     }
