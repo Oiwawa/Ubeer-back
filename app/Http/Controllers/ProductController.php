@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -15,11 +16,11 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Collection|Product[]
+     * @return string
      */
-    public function index()
+    public function index(): string
     {
-        return Product::all();
+        return Product::all()->toJson();
     }
 
     /**
@@ -31,64 +32,66 @@ class ProductController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validator = Validator::make([$request->all()], [
+        $validator = Validator::make($request->all(), [
            'name' => 'string|required|unique:product,name',
-           'description' => 'text',
+           'description' => 'string',
            'price' => 'integer|required',
-            'icon' => 'image|required'
+            'icon' => 'string|required'
         ]);
 
         $data = $validator->validate();
         $product = new Product($data);
-        $brewery = Brewery::where('name', $request->get('brewery'));
-        $product->brewery = $brewery;
+        $brewery = Brewery::where('name', $request->get('brewery'))->first();
+        $product->brewery_id = $brewery->id;
         $product->save();
 
-        return response()->json(compact($product));
+        return response()->json(compact('product'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return JsonResponse
      */
-    public function show(Product $product)
+    public function show(Product $product): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
+        return response()->json($product);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return JsonResponse
+     * @throws ValidationException
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Product $product): JsonResponse
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'string|required|unique:product,name',
+            'description' => 'string',
+            'price' => 'integer|required',
+            'icon' => 'string|required'
+        ]);
+
+        $data = $validator->validate();
+        $product->fill($data);
+        $product->save();
+
+        return response()->json(compact('product'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return JsonResponse
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product): JsonResponse
     {
-        //
+        $product->delete();
+        return response()->json(['status' => 'product deleted']);
     }
 }

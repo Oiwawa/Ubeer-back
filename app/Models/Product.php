@@ -16,6 +16,7 @@ class Product extends Model
         'description',
         'price',
         'brewery_id',
+        'icon',
     ];
 
     public function brewery()

@@ -15,12 +15,13 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')
+            $table->uuid('user_id')->nullable();
+            $table->foreign('user_id')
                 ->references('id')
-                ->on('user');
+                ->on('users');
             $table->foreignUuid('brewery_id')
                 ->references('id')
-                ->on('brewery');
+                ->on('breweries');
             $table->text('order_list');
             $table->timestamp('ordered_for')->nullable();
             $table->string('status');

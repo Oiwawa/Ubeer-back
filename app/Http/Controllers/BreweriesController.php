@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\brewery;
+use App\Models\Brewery;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,14 +10,14 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class BreweryController extends Controller
+class BreweriesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Brewery[]|Collection
+     * @return Brewery[]
      */
-    public function index()
+    public function index(): array
     {
         return Brewery::all();
     }
@@ -32,8 +32,8 @@ class BreweryController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validator = Validator::make([$request->all()], [
-            'name' => 'string|unique:user,username',
+        $validator = Validator::make($request->toArray(), [
+            'name' => 'string|unique:brewery,name',
             'email' => 'email|unique:user,email',
             'phone' => 'string',
             'password' => 'string',
@@ -65,7 +65,7 @@ class BreweryController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param brewery $brewery
+     * @param Brewery $brewery
      * @return JsonResponse
      * @throws ValidationException
      */
@@ -89,7 +89,7 @@ class BreweryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param brewery $brewery
+     * @param Brewery $brewery
      * @return JsonResponse
      */
     public function destroy(Brewery $brewery): JsonResponse

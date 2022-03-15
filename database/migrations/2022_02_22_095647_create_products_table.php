@@ -18,10 +18,12 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('price');
+            $table->string('icon');
             $table->foreignUuid('brewery_id')
                 ->references('id')
-                ->on('brewery');
+                ->on('breweries');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

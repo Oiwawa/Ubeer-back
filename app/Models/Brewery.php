@@ -14,15 +14,12 @@ class Brewery extends Model
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
-        'address_id',
+        'address',
+        'zipcode',
+        'city',
     ];
-
-
-    public function address()
-    {
-        return $this->belongsTo(Address::class);
-    }
 
     public function products()
     {
