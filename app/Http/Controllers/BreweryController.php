@@ -2,30 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\user;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use App\Models\brewery;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class UserController extends Controller
+class BreweryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return string
+     * @return Brewery[]|Collection
      */
-    public function index(): string
+    public function index()
     {
-        return User::all()->toJson();
+        return Brewery::all();
     }
 
+
     /**
-     * Store a newly created user in storage.
+     * Store a newly created resource in storage.
      *
      * @param Request $request
      * @return JsonResponse
@@ -34,8 +33,9 @@ class UserController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make([$request->all()], [
-            'username' => 'string|unique:user,username',
+            'name' => 'string|unique:user,username',
             'email' => 'email|unique:user,email',
+            'phone' => 'string',
             'password' => 'string',
             'address' => 'string',
             'zipcode' => 'string',
@@ -43,35 +43,36 @@ class UserController extends Controller
         ]);
 
         $data = $validator->validate();
-        $user = new User();
-        $user->fill($data);
-        $user->save();
-        return response()->json(compact('user'));
+        $brewery = new Brewery();
+        $brewery->fill($data);
+        $brewery->save();
+        return response()->json(compact('brewery'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param User $user
+     * @param Brewery $brewery
      * @return JsonResponse
      */
-    public function show(User $user): JsonResponse
+    public function show(Brewery $brewery): JsonResponse
     {
-        return response()->json(compact('user'));
+        return response()->json(compact('brewery'));
     }
+
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param User $user
+     * @param brewery $brewery
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function update(Request $request, User $user): JsonResponse
+    public function update(Request $request, Brewery $brewery): JsonResponse
     {
         $validator = Validator::make([$request->all()], [
-            'username' => 'string|unique:user,username',
+            'name' => 'string|unique:user,username',
             'email' => 'email|unique:user,email',
             'password' => 'string',
             'address' => 'string',
@@ -80,20 +81,20 @@ class UserController extends Controller
         ]);
 
         $data = $validator->validate();
-        $user->fill($data);
-        $user->save();
-        return response()->json(compact('user'));
+        $brewery->fill($data);
+        $brewery->save();
+        return response()->json(compact('brewery'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param User $user
+     * @param brewery $brewery
      * @return JsonResponse
      */
-    public function destroy(User $user): JsonResponse
+    public function destroy(Brewery $brewery): JsonResponse
     {
-        $user->delete();
-        return response()->json(['status' => 'user deleted']);
+        $brewery->delete();
+        return response()->json(['status' => 'brewery deleted']);
     }
 }
