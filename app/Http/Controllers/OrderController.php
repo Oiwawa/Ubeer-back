@@ -3,22 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class OrderController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Collection|Order[]
+     */
+    public function index()
+    {
+        return Order::all();
+    }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Response
      */
     public function store(Request $request)
     {
-        //
+        $test = collect();
+        $test['id'] = "aeddf521-91f5-4312-bd1c-a53e9a3fa9ac";
+        $test['quantity'] = "6";
+
+        $items = Product::paginate(2);
+        foreach ($items as $item) {
+            dump($item->id);
+        }
+        return '';
     }
 
     /**
