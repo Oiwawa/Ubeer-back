@@ -15,12 +15,12 @@ class Product extends Model
         'name',
         'description',
         'price',
-        'brewery_id',
+        'seller_id',
         'icon',
     ];
 
-    public function brewery()
+    public function seller()
     {
-        return $this->belongsTo(Brewery::class)->withTrashed();
+        return $this->belongsTo(Seller::class)->withTrashed();
     }
 }

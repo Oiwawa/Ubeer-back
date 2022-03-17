@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kblais\Uuid\Uuid;
 
-class Brewery extends Model
+class Seller extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
 

@@ -19,9 +19,9 @@ class CreateOrdersTable extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table->foreignUuid('brewery_id')
+            $table->foreignUuid('seller_id')
                 ->references('id')
-                ->on('breweries');
+                ->on('sellers');
             $table->text('order_list');
             $table->timestamp('ordered_for')->nullable();
             $table->string('status');

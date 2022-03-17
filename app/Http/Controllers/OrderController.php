@@ -33,9 +33,7 @@ class OrderController extends Controller
         $test['quantity'] = "6";
 
         $items = Product::paginate(2);
-        foreach ($items as $item) {
-            dump($item->id);
-        }
+        $order = new Order();
         return '';
     }
 

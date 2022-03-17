@@ -13,7 +13,7 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'brewery_id',
+        'seller_id',
         'order_list',
         'status',
         'ordered_for',
@@ -29,9 +29,9 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function brewery()
+    public function seller()
     {
-        return $this->belongsTo(Brewery::class);
+        return $this->belongsTo(Seller::class);
     }
 
     public function getOrderListAttribute()

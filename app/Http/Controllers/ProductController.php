@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brewery;
+use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -36,13 +36,13 @@ class ProductController extends Controller
            'name' => 'string|required|unique:product,name',
            'description' => 'string',
            'price' => 'integer|required',
-            'icon' => 'string|required'
+           'icon' => 'string|required',
         ]);
 
         $data = $validator->validate();
         $product = new Product($data);
-        $brewery = Brewery::where('name', $request->get('brewery'))->first();
-        $product->brewery_id = $brewery->id;
+        $seller = Seller::where('name', $request->get('seller'))->first();
+        $product->seller_id = $seller->id;
         $product->save();
 
         return response()->json(compact('product'));
