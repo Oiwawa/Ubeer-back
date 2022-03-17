@@ -11,16 +11,22 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes, Uuid;
 
+    const STATUS_ORDERED = 'ordered';
+    const STATUS_DELIVERING = 'delivering';
+    const STATUS_DELIVERED = 'delivered';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_REFUSED = 'refused';
+
     protected $fillable = [
         'user_id',
         'seller_id',
         'order_list',
         'status',
-        'ordered_for',
+        'deliver_time',
     ];
 
     protected $dates = [
-        'ordered_for',
+        'deliver_time',
     ];
 
 

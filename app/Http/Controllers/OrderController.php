@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Seller;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,6 +36,9 @@ class OrderController extends Controller
 
         $items = Product::paginate(2);
         $order = new Order();
+        $order->seller = Seller::where('name', $request->get('seller'))->first();
+        $order->status = ORDER::STATUS_ORDERED;
+        $order->ordered_for = Carbon::parse($request->get('deliver_time'));
         return '';
     }
 

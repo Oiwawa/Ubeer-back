@@ -23,7 +23,7 @@ class CreateOrdersTable extends Migration
                 ->references('id')
                 ->on('sellers');
             $table->text('order_list');
-            $table->timestamp('ordered_for')->nullable();
+            $table->timestamp('deliver_time')->nullable();
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
