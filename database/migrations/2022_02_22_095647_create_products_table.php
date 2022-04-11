@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->string('price');
             $table->string('icon');
+            $table->string('abv')->nullable();
             $table->foreignUuid('seller_id')
                 ->references('id')
                 ->on('sellers');

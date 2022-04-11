@@ -40,6 +40,14 @@ class Order extends Model
         return $this->belongsTo(Seller::class);
     }
 
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'orders_items', 'order_id', 'product_id')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
+
     public function getOrderListAttribute()
     {
         $totalPrice = $this->getTotalPriceAttribute();

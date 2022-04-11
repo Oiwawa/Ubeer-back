@@ -15,11 +15,10 @@ class SellerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Seller[]
      */
-    public function index(): array
+    public function index(): JsonResponse
     {
-        return Seller::all();
+        return response()->json(Seller::all());
     }
 
 
@@ -33,8 +32,8 @@ class SellerController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->toArray(), [
-            'name' => 'string|unique:seller,name',
-            'email' => 'email|unique:user,email',
+            'name' => 'string|unique:sellers,name',
+            'email' => 'email|unique:users,email',
             'phone' => 'string',
             'password' => 'string',
             'address' => 'string',

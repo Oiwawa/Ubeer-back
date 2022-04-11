@@ -17,10 +17,18 @@ class Product extends Model
         'price',
         'seller_id',
         'icon',
+        'abv'
     ];
 
     public function seller()
     {
         return $this->belongsTo(Seller::class)->withTrashed();
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Product::class)
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 }

@@ -22,7 +22,6 @@ class CreateOrdersTable extends Migration
             $table->foreignUuid('seller_id')
                 ->references('id')
                 ->on('sellers');
-            $table->text('order_list');
             $table->timestamp('deliver_time')->nullable();
             $table->string('status');
             $table->timestamps();

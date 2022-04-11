@@ -18,9 +18,9 @@ class ProductController extends Controller
      *
      * @return string
      */
-    public function index(): string
+    public function index(): JsonResponse
     {
-        return Product::all()->toJson();
+        return response()->json(Product::all());
     }
 
     /**
@@ -33,16 +33,18 @@ class ProductController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-           'name' => 'string|required|unique:product,name',
-           'description' => 'string',
-           'price' => 'integer|required',
-           'icon' => 'string|required',
+            'name' => 'string|required|unique:products,name',
+            'description' => 'string',
+            'price' => 'integer|required',
+            'icon' => 'string|required',
+            'abv' => 'string|required',
         ]);
 
         $data = $validator->validate();
         $product = new Product($data);
         $seller = Seller::where('name', $request->get('seller'))->first();
         $product->seller_id = $seller->id;
+        $product->abv = $request->get('abv');
         $product->save();
 
         return response()->json(compact('product'));

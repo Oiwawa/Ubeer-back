@@ -34,8 +34,8 @@ class UserController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make([$request->all()], [
-            'username' => 'string|unique:user,username',
-            'email' => 'email|unique:user,email',
+            'username' => 'string|unique:users,username',
+            'email' => 'email|unique:users,email',
             'password' => 'string',
             'address' => 'string',
             'zipcode' => 'string',
