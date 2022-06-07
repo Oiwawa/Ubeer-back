@@ -16,11 +16,11 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return string
+     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        return response()->json(Product::all());
+        return response()->json(Product::with('seller')->get());
     }
 
     /**
@@ -36,13 +36,14 @@ class ProductController extends Controller
             'name' => 'string|required|unique:products,name',
             'description' => 'string',
             'price' => 'integer|required',
-            'icon' => 'string|required',
+            'icon' => 'string',
             'abv' => 'string|required',
+            'seller_name' => 'string|exists:sellers,name'
         ]);
 
         $data = $validator->validate();
         $product = new Product($data);
-        $seller = Seller::where('name', $request->get('seller'))->first();
+        $seller = Seller::where('name', $data['seller_name'])->first();
         $product->seller_id = $seller->id;
         $product->abv = $request->get('abv');
         $product->save();
@@ -58,6 +59,7 @@ class ProductController extends Controller
      */
     public function show(Product $product): JsonResponse
     {
+        $product->load('seller');
         return response()->json($product);
     }
 
@@ -95,5 +97,10 @@ class ProductController extends Controller
     {
         $product->delete();
         return response()->json(['status' => 'product deleted']);
+    }
+
+    public function filterSeller(Seller $seller)
+    {
+        return Product::where('seller_id', $seller->id)->get();
     }
 }

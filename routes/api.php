@@ -28,6 +28,7 @@ Route::apiResource('user', UserController::class);
 Route::apiResource('seller', SellerController::class);
 
 Route::apiResource('product', ProductController::class);
+Route::get('product/search/{seller}', [ProductController::class, 'filterSeller']);
 
 Route::apiResource('order', OrderController::class);
 
