@@ -22,13 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::apiResource('users', UserController::class);
 
-Route::apiResource('user', UserController::class);
+Route::apiResource('sellers', SellerController::class);
 
-Route::apiResource('seller', SellerController::class);
+Route::apiResource('products', ProductController::class);
 
-Route::apiResource('product', ProductController::class);
-Route::get('product/search/{seller}', [ProductController::class, 'filterSeller']);
-
-Route::apiResource('order', OrderController::class);
+Route::apiResource('orders', OrderController::class);
 

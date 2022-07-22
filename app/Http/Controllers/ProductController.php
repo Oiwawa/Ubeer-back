@@ -74,10 +74,10 @@ class ProductController extends Controller
     public function update(Request $request, Product $product): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'string|required|unique:product,name',
+            'name' => 'string|unique:product,name',
             'description' => 'string',
-            'price' => 'integer|required',
-            'icon' => 'string|required'
+            'price' => 'integer',
+            'icon' => 'string'
         ]);
 
         $data = $validator->validate();
