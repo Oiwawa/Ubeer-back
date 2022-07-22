@@ -15,12 +15,20 @@ class Product extends Model
         'name',
         'description',
         'price',
-        'brewery_id',
+        'seller_id',
         'icon',
+        'abv'
     ];
 
-    public function brewery()
+    public function seller()
     {
-        return $this->belongsTo(Brewery::class)->withTrashed();
+        return $this->belongsTo(Seller::class)->withTrashed();
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Product::class)
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 }

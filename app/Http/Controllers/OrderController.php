@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Seller;
+use Carbon\Carbon;
+use Faker\Core\Uuid;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+use Nette\Utils\Random;
 
 class OrderController extends Controller
 {
@@ -16,9 +21,9 @@ class OrderController extends Controller
      *
      * @return Collection|Order[]
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return Order::all();
+        return response()->json(Order::all());
     }
 
     /**
@@ -28,15 +33,19 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $test = collect();
-        $test['id'] = "aeddf521-91f5-4312-bd1c-a53e9a3fa9ac";
-        $test['quantity'] = "6";
-
         $items = Product::paginate(2);
-        foreach ($items as $item) {
-            dump($item->id);
+        $order = new Order();
+        $order->seller = Seller::where('name', $request->get('seller'))->first();
+        $order->status = ORDER::STATUS_ORDERED;
+        $order->deliver_time = Carbon::parse($request->get('deliver_time'));
+
+        $cart = $request->all('cart');
+        $cart = Product::all();
+        foreach ($cart as $item) {
+            $order->products()->attach($item->id, ['quantity' => $item->quantity]);
         }
-        return '';
+
+        return response()->json($order);
     }
 
     /**

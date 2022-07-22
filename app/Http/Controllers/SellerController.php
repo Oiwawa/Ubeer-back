@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brewery;
+use App\Models\Seller;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,16 +10,15 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class BreweriesController extends Controller
+class SellerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Brewery[]
      */
-    public function index(): array
+    public function index(): JsonResponse
     {
-        return Brewery::all();
+        return response()->json(Seller::all());
     }
 
 
@@ -33,8 +32,8 @@ class BreweriesController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->toArray(), [
-            'name' => 'string|unique:brewery,name',
-            'email' => 'email|unique:user,email',
+            'name' => 'string|unique:sellers,name',
+            'email' => 'email|unique:users,email',
             'phone' => 'string',
             'password' => 'string',
             'address' => 'string',
@@ -43,21 +42,21 @@ class BreweriesController extends Controller
         ]);
 
         $data = $validator->validate();
-        $brewery = new Brewery();
-        $brewery->fill($data);
-        $brewery->save();
-        return response()->json(compact('brewery'));
+        $seller = new Seller();
+        $seller->fill($data);
+        $seller->save();
+        return response()->json(compact('seller'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Brewery $brewery
+     * @param Seller $seller
      * @return JsonResponse
      */
-    public function show(Brewery $brewery): JsonResponse
+    public function show(Seller $seller): JsonResponse
     {
-        return response()->json(compact('brewery'));
+        return response()->json(compact('seller'));
     }
 
 
@@ -65,11 +64,11 @@ class BreweriesController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param Brewery $brewery
+     * @param Seller $seller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function update(Request $request, Brewery $brewery): JsonResponse
+    public function update(Request $request, Seller $seller): JsonResponse
     {
         $validator = Validator::make([$request->all()], [
             'name' => 'string|unique:user,username',
@@ -81,20 +80,20 @@ class BreweriesController extends Controller
         ]);
 
         $data = $validator->validate();
-        $brewery->fill($data);
-        $brewery->save();
-        return response()->json(compact('brewery'));
+        $seller->fill($data);
+        $seller->save();
+        return response()->json(compact('seller'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Brewery $brewery
+     * @param Seller $seller
      * @return JsonResponse
      */
-    public function destroy(Brewery $brewery): JsonResponse
+    public function destroy(Seller $seller): JsonResponse
     {
-        $brewery->delete();
-        return response()->json(['status' => 'brewery deleted']);
+        $seller->delete();
+        return response()->json(['status' => 'seller deleted']);
     }
 }

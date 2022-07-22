@@ -11,16 +11,22 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes, Uuid;
 
+    const STATUS_ORDERED = 'ordered';
+    const STATUS_DELIVERING = 'delivering';
+    const STATUS_DELIVERED = 'delivered';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_REFUSED = 'refused';
+
     protected $fillable = [
         'user_id',
-        'brewery_id',
+        'seller_id',
         'order_list',
         'status',
-        'ordered_for',
+        'deliver_time',
     ];
 
     protected $dates = [
-        'ordered_for',
+        'deliver_time',
     ];
 
 
@@ -29,10 +35,18 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function brewery()
+    public function seller()
     {
-        return $this->belongsTo(Brewery::class);
+        return $this->belongsTo(Seller::class);
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'orders_items', 'order_id', 'product_id')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
 
     public function getOrderListAttribute()
     {

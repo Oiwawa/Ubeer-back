@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\BreweriesController;
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -25,9 +25,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('user', UserController::class);
 
-Route::apiResource('brewery', BreweriesController::class);
+Route::apiResource('seller', SellerController::class);
 
 Route::apiResource('product', ProductController::class);
+Route::get('product/search/{seller}', [ProductController::class, 'filterSeller']);
 
 Route::apiResource('order', OrderController::class);
 
